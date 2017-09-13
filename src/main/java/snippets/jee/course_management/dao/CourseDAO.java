@@ -35,7 +35,7 @@ public class CourseDAO {
 
     public static final class CourseRowMapper implements RowMapper<CourseDTO> {
         @Override
-        public CourseDTO mapRow (ResultSet resultSet, int rowNum) throws SQLException {
+        public CourseDTO mapRow (ResultSet resultSet, int rowNumInt) throws SQLException {
             CourseDTO courseDTO = new CourseDTO();
             courseDTO.setId(resultSet.getInt("id"));
             courseDTO.setName(resultSet.getString("name"));
@@ -44,7 +44,7 @@ public class CourseDAO {
         }
     }
 
-    public void addCourse (final CourseDTO course) {
+    public void addCourse (final CourseDTO courseDTO) {
         KeyHolder keyHolder = new GeneratedKeyHolder();
         jdbcTemplate.update(new PreparedStatementCreator() {
 
@@ -52,12 +52,38 @@ public class CourseDAO {
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 String sql = "insert into Course (name, credits) values (?, ?)";
                 PreparedStatement preparedStatement = connection.prepareStatement(sql, new String[] {"id"});
-                preparedStatement.setString(1, course.getName());
-                preparedStatement.setInt(2, course.getCredits());
+                preparedStatement.setString(1, courseDTO.getName());
+                preparedStatement.setInt(2, courseDTO.getCredits());
                 return preparedStatement;
             }
         }, keyHolder);
 
-        course.setId(keyHolder.getKey().intValue());
+        courseDTO.setId(keyHolder.getKey().intValue());
+    }
+
+    public void updateCourse (final CourseDTO courseDTO) {
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
+                String sql = "update Course set name = ?, credits = ? where id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setString(1, courseDTO.getName());
+                preparedStatement.setInt(2, courseDTO.getCredits());
+                preparedStatement.setInt(3, courseDTO.getId());
+                return preparedStatement;
+            }
+        });
+    }
+
+    public void deleteCourse (final int id) {
+        jdbcTemplate.update(new PreparedStatementCreator() {
+            @Override
+            public PreparedStatement createPreparedStatement (Connection connection) throws SQLException {
+                String sql = "delete from Course where id = ?";
+                PreparedStatement preparedStatement = connection.prepareStatement(sql);
+                preparedStatement.setInt(1, id);
+                return preparedStatement;
+            }
+        });
     }
 }
