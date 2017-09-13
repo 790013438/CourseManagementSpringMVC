@@ -29,4 +29,15 @@ public class CourseController {
         model.addAttribute("course", course);
         return "addCourse";
     }
+
+    @RequestMapping("/doAddCourse")
+    public String doAddCourse (@ModelAttribute("course") CourseDTO course, Model model) {
+        try {
+            courseDAO.addCourse(course);
+        } catch (Throwable th) {
+            model.addAttribute("error", th.getLocalizedMessage());
+            return "addCourse";
+        }
+        return "redirect:courses";
+    }
 }
