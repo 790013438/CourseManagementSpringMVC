@@ -63,6 +63,7 @@ public class CourseDAO {
 
     public void updateCourse (final CourseDTO courseDTO) {
         jdbcTemplate.update(new PreparedStatementCreator() {
+
             @Override
             public PreparedStatement createPreparedStatement(Connection connection) throws SQLException {
                 String sql = "update Course set name = ?, credits = ? where id = ?";
@@ -77,6 +78,7 @@ public class CourseDAO {
 
     public void deleteCourse (final int id) {
         jdbcTemplate.update(new PreparedStatementCreator() {
+
             @Override
             public PreparedStatement createPreparedStatement (Connection connection) throws SQLException {
                 String sql = "delete from Course where id = ?";
@@ -85,5 +87,11 @@ public class CourseDAO {
                 return preparedStatement;
             }
         });
+    }
+
+    public CourseDTO getCourse (int id) {
+        String sql = "select * from course where id = ?";
+        CourseDTO courseDTO = jdbcTemplate.queryForObject(sql, new CourseRowMapper(), id);
+        return courseDTO;
     }
 }
