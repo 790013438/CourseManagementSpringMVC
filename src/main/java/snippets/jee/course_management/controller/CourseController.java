@@ -40,4 +40,20 @@ public class CourseController {
         }
         return "redirect:courses";
     }
+
+    @RequestMapping("/course/update/{id}")
+    public String updateCourse (@PathVariable int id, Model model) {
+        //TODO: Error handling
+        CourseDTO course = courseDAO.getCourse(id);
+        model.addAttibute("course", course);
+        model.addAttribute("title", "Update Course");
+        return "updateCourse";
+    }
+
+    @RequestMapping("/course/delete/{id}")
+    public String deleteCourse (@PathVariable("id") int courseId, Model model) {
+        //TODO: Error handling
+        courseDAO.deleteCourse(courseId);
+        return "redirect:/courses";
+    }
 }
