@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import snippets.jee.course_management.dao.CourseDAO;
@@ -45,7 +46,7 @@ public class CourseController {
     public String updateCourse (@PathVariable int id, Model model) {
         //TODO: Error handling
         CourseDTO course = courseDAO.getCourse(id);
-        model.addAttibute("course", course);
+        model.addAttribute("course", course);
         model.addAttribute("title", "Update Course");
         return "updateCourse";
     }

@@ -4,10 +4,17 @@
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-        <link rel="stylesheet" type="text/css" href="https://790013438.github.io/static/css/courses.css"/>
+        <link rel="stylesheet" type="text/css" href="static/css/courses.css"/>
         <title>Insert title here</title>
+        <script type="text/javascript">
+            function canDelete (courseName) {
+                return confirm("Are you sure you want to delete " + courseName + "?");
+            }
+        </script>
     </head>
     <body>
+        <h2>Courses:</h2>
+
         <table>
             <tr>
                 <th>Id</th>
@@ -20,8 +27,15 @@
                     <td>${course.id}</td>
                     <td>${course.name}</td>
                     <td>${course.credits}</td>
+                    <td>
+                        <a href="course/update/${course.id}">Edit</a>
+                    </td>
+                    <td>
+                        <a href="course/delete/${course.id}" onclick="return canDelete('${course.name}')">Delete</a>
+                    </td>
                 </tr>
             </c:forEach>
         </table>
+        <button type="submit" onclick="location.href='addCourse'">Add Course</button>
     </body>
 </html>
