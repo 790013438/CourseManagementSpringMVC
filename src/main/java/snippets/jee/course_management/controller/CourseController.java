@@ -32,9 +32,9 @@ public class CourseController {
     }
 
     @RequestMapping("/doAddCourse")
-    public String doAddCourse (@ModelAttribute("course") CourseDTO course, Model model) {
+    public String doAddCourse (@ModelAttribute("course") CourseDTO courseDTO, Model model) {
         try {
-            courseDAO.addCourse(course);
+            courseDAO.addCourse(courseDTO);
         } catch (Throwable th) {
             model.addAttribute("error", th.getLocalizedMessage());
             return "addCourse";
@@ -49,6 +49,17 @@ public class CourseController {
         model.addAttribute("course", course);
         model.addAttribute("title", "Update Course");
         return "updateCourse";
+    }
+
+    @RequestMapping("/doUpdateCourse")
+    public String doUpdateCourse (@ModelAttribute("course") CourseDTO courseDTO, Model model) {
+        try {
+            courseDAO.updateCourse(courseDTO);
+        } catch (Throwable th) {
+            model.addAttribute("error", "更新失败59:)" + th.getMessage());
+            return "updateCourse";
+        }
+        return "redirect:courses";
     }
 
     @RequestMapping("/course/delete/{id}")
