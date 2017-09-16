@@ -24,7 +24,7 @@
     <!-- load jdbc.properties -->
     <context:property-placeholder location="classpath:jdbc.properties"/>
 
-    <!-- datasource -->
+    <!-- data source -->
     <beans:bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
         <beans:property name="driverClassName" value="${jdbc.driverClassName}"/>
         <beans:property name="url" value="${jdbc.url}"/>
@@ -34,6 +34,12 @@
 
     <context:component-scan base-package="snippets.jee.course_management" />
 
+    <interceptors>
+        <interceptor>
+            <mapping path="/**"/>
+            <beans:bean class="snippets.jee.course_management.interceptor.LoginInterceptor"/>
+        </interceptor>
+    </interceptors>
 
 
 </beans:beans>
